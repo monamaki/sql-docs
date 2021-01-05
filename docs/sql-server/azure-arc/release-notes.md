@@ -20,7 +20,7 @@ ms.prod: sql
 
 This release introduces an updated [resource provider](/azure/azure-resource-manager/management/azure-services-resource-providers) called `Microsoft.AzureArcData`. Before you can continue using Azure Arc enabled SQL Server, you need to register this resource provider. See the resource provider registration instructions in the [Prerequisites](connect.md#prerequisites) section.
 
-If you have existing existing SQL Server - Azure Arc resources, use these steps to migrate them to Microsoft.AzureArcData namespace.
+If you have existing SQL Server - Azure Arc resources, use these steps to migrate them to Microsoft.AzureArcData namespace.
 
 1. Launch the [Cloud Shell](https://shell.azure.com/). For details, [read more about PowerShell in Cloud Shell](https://aka.ms/pscloudshell/docs).
 
