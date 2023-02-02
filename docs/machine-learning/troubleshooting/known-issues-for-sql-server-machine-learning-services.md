@@ -281,6 +281,24 @@ The best solution is to upgrade to [!INCLUDE[sssql19-md](../../includes/sssql19-
 > [!IMPORTANT]  
 > If you do the steps above, you must manually remove the added key prior to upgrading to a later version of SQL Server.
 
+
+## Performance issues of Process Pooling in ML Services (R and Python) 
+This section contains known issues and workarounds for using ML services (R and Python) in SQL Server.
+
+### Cold start Performance of Process Pooling in ML Services
+
+#### First query
+Upon execution of `sp_execute_external_script`, the launchpad service launches satellite processes that start the external runtimes such as R and Python. To amortize the startup cost, a pool of processes is created that can be used in the subsequent execution of `sp_execute_external_script`. This pool of processes is specific to this user, database, and the used language (R or Python in ML Services). 
+After a period of idle time, the processes are terminated via a cleanup task. Thus, the satellite processes need to be warmed up when `sp_execute_external_script` is executed for the first time or after a period of idle time. Cold start of such pooled processes may be slow (e.g., due to hardware constraints). 
+
+#### Workaround
+If the performance of the first call is important, it is recommended to keep the queries warm. For example, a background task can be executed that fires a simple `sp_execute_external_script` query before the processes get expired. For instance, to keep R queries warm, you may execute the following query periodically.
+
+```sql
+EXECUTE sp_execute_external_script @language = N'R', @script = N'';
+GO
+```
+
 ## R script execution issues
 
 This section contains known issues that are specific to running R on SQL Server, as well as some issues that are related to the R libraries and tools published by Microsoft, including RevoScaleR.
